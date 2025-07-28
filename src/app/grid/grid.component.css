@@ -1,0 +1,62 @@
+.grid-container {
+  display: grid;
+  background: white;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  max-width: 100%;
+  max-height: 80vh;
+  overflow: auto;
+  position: relative;
+}
+
+.grid-cell {
+  min-height: 40px;
+  min-width: 40px;
+  position: relative;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.grid-cell:hover {
+  background-color: rgba(52, 152, 219, 0.1);
+}
+
+.grid-cell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+/* Page size specific styles */
+.grid-container[style*="210mm"] {
+  /* A4 Portrait */
+  min-width: 400px;
+  min-height: 566px;
+}
+
+.grid-container[style*="297mm"] {
+  /* A4 Landscape */
+  min-width: 566px;
+  min-height: 400px;
+}
+
+/* Responsive scaling */
+@media (max-width: 768px) {
+  .grid-container {
+    margin: 10px;
+    transform: scale(0.8);
+    transform-origin: top left;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-container {
+    transform: scale(0.6);
+  }
+}

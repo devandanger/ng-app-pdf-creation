@@ -1,1 +1,11 @@
-<p>grid works!</p>
+<div class="grid-container" [ngStyle]="getGridStyles()">
+  @for (cell of gridCells; track cell.row + '-' + cell.col) {
+    <div 
+      class="grid-cell"
+      [ngStyle]="getCellStyles(cell.row, cell.col)"
+      (click)="onCellClick(cell.row, cell.col)"
+      [attr.data-row]="cell.row"
+      [attr.data-col]="cell.col">
+    </div>
+  }
+</div>
