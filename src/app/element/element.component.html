@@ -1,1 +1,50 @@
-<p>element works!</p>
+<div 
+  class="element"
+  [class.selected]="isSelected"
+  [ngStyle]="getElementStyles()"
+  (click)="onClick($event)"
+  (keydown)="onKeyDown($event)"
+  [attr.data-element-type]="element.type"
+  [attr.data-element-id]="element.id"
+  tabindex="0">
+  
+  @if (element.type === 'text') {
+    <div class="text-content" [innerHTML]="element.content || 'Click to edit text'"></div>
+  } @else if (element.type === 'image') {
+    <div class="image-content">
+      @if (element.src) {
+        <img [src]="element.src" [alt]="'Image element'" [style.object-fit]="element.fit || 'cover'">
+      } @else {
+        <div class="image-placeholder">
+          <div class="placeholder-icon">🖼️</div>
+          <div class="placeholder-text">Click to add image</div>
+        </div>
+      }
+    </div>
+  }
+  
+  @if (isSelected) {
+    <div class="element-controls">
+      <button 
+        type="button" 
+        class="control-btn delete-btn" 
+        (click)="onDelete($event)"
+        title="Delete element (Del)">
+        ×
+      </button>
+      
+      <!-- Resize handles -->
+      <div class="resize-handle resize-right" 
+           (mousedown)="startResize($event, 'right')"
+           title="Resize width"></div>
+      <div class="resize-handle resize-bottom" 
+           (mousedown)="startResize($event, 'bottom')"
+           title="Resize height"></div>
+      <div class="resize-handle resize-corner" 
+           (mousedown)="startResize($event, 'corner')"
+           title="Resize both"></div>
+      
+      <div class="selection-indicator"></div>
+    </div>
+  }
+</div>

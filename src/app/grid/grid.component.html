@@ -1,11 +1,49 @@
-<div class="grid-container" [ngStyle]="getGridStyles()">
+<div 
+  class="grid-container" 
+  [ngStyle]="getGridStyles()"
+  cdkDropList
+  id="grid-canvas"
+  [cdkDropListData]="elements"
+  cdkDropListConnectedTo="element-palette"
+  (cdkDropListDropped)="onDrop($event)"
+  (cdkDropListEntered)="onDragEnter($event)"
+  (cdkDropListExited)="onDragExit($event)">
+  
   @for (cell of gridCells; track cell.row + '-' + cell.col) {
     <div 
       class="grid-cell"
       [ngStyle]="getCellStyles(cell.row, cell.col)"
+      [class.drop-target]="isDragActive"
+      [class.occupied]="getElementsInCell(cell.row, cell.col).length > 0"
       (click)="onCellClick(cell.row, cell.col)"
+      (mouseenter)="onCellHover(cell.row, cell.col)"
+      (mouseleave)="onCellLeave()"
       [attr.data-row]="cell.row"
       [attr.data-col]="cell.col">
+      
+      @for (element of getElementsInCell(cell.row, cell.col); track element.id) {
+        <div class="element-container" [attr.data-element-id]="element.id">
+          <app-element 
+            [element]="element"
+            [isSelected]="isElementSelected(element.id)"
+            (elementClick)="onElementClick(element.id)"
+            (elementDelete)="onElementDelete(element.id)"
+            (elementResize)="onElementResize($event)">
+          </app-element>
+        </div>
+      }
+      
+      @if (isDragActive && isHoveredCell(cell.row, cell.col) && getElementsInCell(cell.row, cell.col).length === 0) {
+        <div class="cell-drop-indicator">
+          <div class="drop-target-icon">+</div>
+        </div>
+      }
+    </div>
+  }
+  
+  @if (isDragActive) {
+    <div class="grid-overlay">
+      <div class="drop-instruction">Drop element onto grid</div>
     </div>
   }
 </div>

@@ -44,6 +44,7 @@
   padding: 20px;
   overflow: auto;
   min-height: 0;
+  container-type: inline-size;
 }
 
 /* Responsive design */

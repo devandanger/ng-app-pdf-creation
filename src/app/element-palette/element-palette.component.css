@@ -57,3 +57,71 @@
   font-weight: 500;
   color: #495057;
 }
+
+/* Drag and Drop styles */
+.palette-item.cdk-drag-dragging {
+  opacity: 0.5;
+}
+
+.drag-placeholder {
+  background: #f8f9fa;
+  border: 2px dashed #3498db;
+  border-radius: 6px;
+  padding: 12px;
+  transition: all 0.2s ease;
+}
+
+.placeholder-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0.7;
+}
+
+.placeholder-icon {
+  opacity: 0.5;
+}
+
+.cdk-drag-preview {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  transform: rotate(-5deg);
+  background: white;
+  border: 1px solid #3498db;
+}
+
+.cdk-drop-list-dragging .palette-item:not(.cdk-drag-dragging) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.drag-preview {
+  background: white;
+  border: 2px solid #3498db;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  transform: rotate(5deg) scale(1.05);
+  opacity: 0.9;
+}
+
+.preview-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.preview-icon {
+  font-size: 20px;
+  animation: bounce 0.5s infinite alternate;
+}
+
+.preview-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3498db;
+}
+
+@keyframes bounce {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-2px); }
+}

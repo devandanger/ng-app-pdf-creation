@@ -9,6 +9,7 @@
   max-height: 80vh;
   overflow: auto;
   position: relative;
+  min-height: 400px;
 }
 
 .grid-cell {
@@ -47,16 +48,198 @@
 }
 
 /* Responsive scaling */
+.grid-container {
+  /* Dynamic scaling based on container size */
+  width: min(100%, var(--grid-width, 100%));
+  height: auto;
+  aspect-ratio: var(--grid-aspect-ratio, auto);
+}
+
+@media (max-width: 1200px) {
+  .grid-container {
+    transform: scale(0.9);
+    transform-origin: center;
+  }
+}
+
+@media (max-width: 992px) {
+  .grid-container {
+    transform: scale(0.8);
+    transform-origin: center;
+  }
+}
+
 @media (max-width: 768px) {
   .grid-container {
     margin: 10px;
-    transform: scale(0.8);
-    transform-origin: top left;
+    transform: scale(0.7);
+    transform-origin: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .grid-container {
+    transform: scale(0.6);
+    transform-origin: center;
   }
 }
 
 @media (max-width: 480px) {
   .grid-container {
+    transform: scale(0.5);
+    transform-origin: center;
+  }
+}
+
+/* Container queries for more precise responsive behavior */
+@container (max-width: 800px) {
+  .grid-container {
+    transform: scale(0.8);
+  }
+}
+
+@container (max-width: 600px) {
+  .grid-container {
+    transform: scale(0.7);
+  }
+}
+
+@container (max-width: 400px) {
+  .grid-container {
     transform: scale(0.6);
   }
+}
+
+/* Drag and Drop styles */
+.element-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+}
+
+.drop-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(52, 152, 219, 0.1);
+  border: 2px dashed #3498db;
+  border-radius: 4px;
+  padding: 20px;
+  font-size: 14px;
+  color: #3498db;
+  font-weight: 500;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.grid-container.cdk-drop-list-receiving {
+  background: rgba(52, 152, 219, 0.05);
+  border-color: #3498db;
+}
+
+.grid-container.cdk-drop-list-dragging {
+  background: rgba(52, 152, 219, 0.02);
+}
+
+.grid-cell:hover {
+  background-color: rgba(52, 152, 219, 0.05);
+}
+
+.cdk-drop-list-dragging .grid-cell {
+  transition: background-color 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Enhanced drop zone styles */
+.grid-cell.drop-target {
+  border-style: solid;
+  border-color: rgba(52, 152, 219, 0.3);
+  transition: all 0.2s ease;
+}
+
+.grid-cell.drop-target:hover {
+  background-color: rgba(52, 152, 219, 0.1);
+  border-color: rgba(52, 152, 219, 0.5);
+}
+
+.grid-cell.occupied {
+  background-color: rgba(248, 249, 250, 0.8);
+  border-color: rgba(222, 226, 230, 0.8);
+}
+
+.grid-cell.occupied.drop-target {
+  background-color: rgba(220, 53, 69, 0.1);
+  border-color: rgba(220, 53, 69, 0.3);
+  cursor: not-allowed;
+}
+
+.cell-drop-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background: rgba(52, 152, 219, 0.2);
+  border: 2px solid #3498db;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse 1s infinite;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.drop-target-icon {
+  font-size: 20px;
+  font-weight: bold;
+  color: #3498db;
+}
+
+.grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(52, 152, 219, 0.05);
+  border: 2px dashed #3498db;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.drop-instruction {
+  background: rgba(52, 152, 219, 0.9);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  animation: fadeInOut 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
 }

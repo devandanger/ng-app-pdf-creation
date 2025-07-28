@@ -1,0 +1,96 @@
+<div class="grid-config">
+  <div class="config-group">
+    <label class="config-label">Grid</label>
+    <div class="config-inputs">
+      <div class="input-group">
+        <label for="columns">Cols</label>
+        <input 
+          id="columns"
+          type="number" 
+          min="1" 
+          max="24" 
+          [ngModel]="gridConfig.columns"
+          (ngModelChange)="onColumnsChange($event)"
+          class="form-input">
+      </div>
+      <div class="input-group">
+        <label for="rows">Rows</label>
+        <input 
+          id="rows"
+          type="number" 
+          min="1" 
+          max="24" 
+          [ngModel]="gridConfig.rows"
+          (ngModelChange)="onRowsChange($event)"
+          class="form-input">
+      </div>
+      <div class="input-group">
+        <label for="gap">Gap</label>
+        <input 
+          id="gap"
+          type="number" 
+          min="0" 
+          max="50" 
+          [ngModel]="gridConfig.gap"
+          (ngModelChange)="onGapChange($event)"
+          class="form-input">
+      </div>
+    </div>
+  </div>
+
+  <div class="config-group">
+    <label class="config-label">Page Size</label>
+    <div class="config-inputs">
+      <select 
+        [ngModel]="selectedPageSize"
+        (ngModelChange)="onPageSizeChange($event)"
+        class="form-select">
+        @for (pageSize of pageSizes; track pageSize.name) {
+          <option [value]="pageSize.name">{{ pageSize.displayName }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  @if (selectedPageSize === 'custom') {
+    <div class="config-group">
+      <label class="config-label">Custom Size</label>
+      <div class="config-inputs">
+        <div class="input-group">
+          <label for="customWidth">Width</label>
+          <input 
+            id="customWidth"
+            type="text" 
+            [(ngModel)]="customWidth"
+            (ngModelChange)="onCustomSizeChange()"
+            placeholder="210mm"
+            class="form-input">
+        </div>
+        <div class="input-group">
+          <label for="customHeight">Height</label>
+          <input 
+            id="customHeight"
+            type="text" 
+            [(ngModel)]="customHeight"
+            (ngModelChange)="onCustomSizeChange()"
+            placeholder="297mm"
+            class="form-input">
+        </div>
+      </div>
+    </div>
+  }
+
+  <div class="config-group">
+    <label class="config-label">Orientation</label>
+    <div class="config-inputs">
+      <button 
+        type="button"
+        class="orientation-btn"
+        (click)="onOrientationToggle()"
+        [title]="gridConfig.page.orientation">
+        <span class="orientation-icon">{{ getOrientationIcon() }}</span>
+        <span class="orientation-text">{{ gridConfig.page.orientation | titlecase }}</span>
+      </button>
+    </div>
+  </div>
+</div>

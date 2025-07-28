@@ -54,3 +54,4 @@ The application state is represented as a JSON structure with:
 
 ## Workflow Reminders
 - Remember to update TASKS.md whenever you complete a task or find out we need to add more
+- After changes make sure to run 'ng build' after changes

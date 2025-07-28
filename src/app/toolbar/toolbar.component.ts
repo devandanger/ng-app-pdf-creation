@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { GridConfigComponent } from '../grid-config/grid-config.component';
 
 @Component({
   selector: 'app-toolbar',
-  imports: [],
+  imports: [GridConfigComponent],
   templateUrl: './toolbar.component.html',
   styleUrl: './toolbar.component.css'
 })

@@ -1,15 +1,54 @@
 <div class="element-palette">
   <h3 class="palette-title">Elements</h3>
   
-  <div class="palette-items">
-    <div class="palette-item" draggable="true">
-      <div class="item-icon">📝</div>
-      <span class="item-label">Text Block</span>
-    </div>
-    
-    <div class="palette-item" draggable="true">
-      <div class="item-icon">🖼️</div>
-      <span class="item-label">Image</span>
-    </div>
+  <div class="palette-items" 
+       cdkDropList 
+       id="element-palette" 
+       [cdkDropListData]="elementTemplates"
+       cdkDropListConnectedTo="grid-canvas"
+       cdkDropListSortingDisabled
+       [cdkDropListEnterPredicate]="noReturnPredicate">
+    @for (template of elementTemplates; track template.type) {
+      <div 
+        class="palette-item"
+        cdkDrag
+        [cdkDragData]="template"
+        (cdkDragStarted)="onDragStart(template)">
+        <div class="item-icon">
+          @if (template.type === 'text') {
+            📝
+          } @else if (template.type === 'image') {
+            🖼️
+          }
+        </div>
+        <span class="item-label">{{ template.label }}</span>
+        
+        <div class="drag-placeholder" *cdkDragPlaceholder>
+          <div class="placeholder-content">
+            <div class="item-icon placeholder-icon">
+              @if (template.type === 'text') {
+                📝
+              } @else if (template.type === 'image') {
+                🖼️
+              }
+            </div>
+            <span class="item-label">{{ template.label }}</span>
+          </div>
+        </div>
+        
+        <div class="drag-preview" *cdkDragPreview>
+          <div class="preview-content">
+            <div class="preview-icon">
+              @if (template.type === 'text') {
+                📝
+              } @else if (template.type === 'image') {
+                🖼️
+              }
+            </div>
+            <span class="preview-label">{{ template.label }}</span>
+          </div>
+        </div>
+      </div>
+    }
   </div>
 </div>
