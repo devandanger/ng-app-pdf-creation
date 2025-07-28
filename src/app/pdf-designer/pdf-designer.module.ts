@@ -1,13 +1,30 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { PdfDesignerRoutingModule } from './pdf-designer-routing.module';
-
+import { LayoutEditorComponent } from '../layout-editor/layout-editor.component';
+import { ToolbarComponent } from '../toolbar/toolbar.component';
+import { ElementPaletteComponent } from '../element-palette/element-palette.component';
+import { CanvasComponent } from '../canvas/canvas.component';
+import { GridComponent } from '../grid/grid.component';
+import { ElementComponent } from '../element/element.component';
+import { PropertiesInspectorComponent } from '../properties-inspector/properties-inspector.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    LayoutEditorComponent,
+    ToolbarComponent,
+    ElementPaletteComponent,
+    CanvasComponent,
+    GridComponent,
+    ElementComponent,
+    PropertiesInspectorComponent
+  ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     PdfDesignerRoutingModule
   ]
 })
