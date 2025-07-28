@@ -20,7 +20,7 @@ export class ElementPaletteComponent implements OnInit {
   }
 
   onDragStart(template: ElementTemplate) {
-    console.log('Drag started for:', template.type);
+    // Drag started
   }
 
   // Prevent items from being dropped back into the palette

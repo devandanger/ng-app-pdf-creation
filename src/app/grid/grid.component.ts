@@ -51,8 +51,7 @@ export class GridComponent implements OnInit, OnDestroy {
         this.selectedElementId = selectedId;
       });
       
-    // Debug: Check if drop list is initialized
-    console.log('Grid component initialized with drop list');
+    // Grid component initialized
   }
 
   ngOnDestroy() {
@@ -71,7 +70,7 @@ export class GridComponent implements OnInit, OnDestroy {
 
   onCellClick(row: number, col: number) {
     if (this.interactive) {
-      console.log(`Grid cell clicked: row ${row}, col ${col}`);
+      // Grid cell clicked
     }
   }
 
@@ -106,34 +105,26 @@ export class GridComponent implements OnInit, OnDestroy {
   }
 
   onDrop(event: CdkDragDrop<any>) {
-    console.log('Drop event:', event);
-    console.log('Previous container ID:', event.previousContainer.id);
-    console.log('Current container ID:', event.container.id);
-    console.log('Item data:', event.item.data);
     
     if (event.previousContainer !== event.container) {
       // Dropping from element palette
       const template = event.item.data as ElementTemplate;
-      console.log('Dropping template:', template);
       const targetCell = this.getDropTargetCell(event);
-      console.log('Target cell:', targetCell);
       
       if (targetCell && template) {
         this.createElement(template, targetCell.row, targetCell.col);
       } else {
-        console.warn('Cannot create element - missing targetCell or template');
+        // Cannot create element - missing targetCell or template
       }
     } else {
       // Moving existing element within grid
       const element = event.item.data as LayoutElement;
-      console.log('Moving element:', element);
       const targetCell = this.getDropTargetCell(event);
-      console.log('Target cell for move:', targetCell);
       
       if (targetCell && element) {
         this.moveElement(element, targetCell.row, targetCell.col);
       } else {
-        console.warn('Cannot move element - missing targetCell or element');
+        // Cannot move element - missing targetCell or element
       }
     }
   }
@@ -182,13 +173,11 @@ export class GridComponent implements OnInit, OnDestroy {
     }
 
     this.layoutStateService.addElement(element);
-    console.log('Created element:', element);
   }
 
   private moveElement(element: LayoutElement, newRow: number, newCol: number) {
     // Check if the target position is different from current position
     if (element.gridPosition.startRow === newRow && element.gridPosition.startCol === newCol) {
-      console.log('Element position unchanged, no move needed');
       return;
     }
 
@@ -198,7 +187,6 @@ export class GridComponent implements OnInit, OnDestroy {
 
     // Check if the new position would exceed grid boundaries
     if (newCol + colSpan > this.gridConfig.columns + 1 || newRow + rowSpan > this.gridConfig.rows + 1) {
-      console.warn('Cannot move element: would exceed grid boundaries');
       return;
     }
 
@@ -213,7 +201,6 @@ export class GridComponent implements OnInit, OnDestroy {
     });
 
     if (wouldConflict) {
-      console.warn('Cannot move element: position conflicts with existing element');
       return;
     }
 
@@ -228,7 +215,6 @@ export class GridComponent implements OnInit, OnDestroy {
     };
 
     this.layoutStateService.updateElement(element.id, updatedElement);
-    console.log('Moved element:', element.id, 'to', newRow, newCol);
   }
 
   private elementsOverlap(pos1: any, pos2: any): boolean {
@@ -249,13 +235,11 @@ export class GridComponent implements OnInit, OnDestroy {
 
   onDragEnter(event: any) {
     this.isDragActive = true;
-    console.log('Drag entered grid', event);
   }
 
   onDragExit(event: any) {
     this.isDragActive = false;
     this.hoveredCell = null;
-    console.log('Drag exited grid', event);
   }
 
   onCellHover(row: number, col: number) {
@@ -280,12 +264,10 @@ export class GridComponent implements OnInit, OnDestroy {
 
   onElementClick(elementId: string) {
     this.layoutStateService.selectElement(elementId);
-    console.log('Selected element:', elementId);
   }
 
   onElementDelete(elementId: string) {
     this.layoutStateService.removeElement(elementId);
-    console.log('Deleted element:', elementId);
   }
 
   onElementResize(event: {element: LayoutElement, newSpan: {cols: number, rows: number}}) {
@@ -296,7 +278,6 @@ export class GridComponent implements OnInit, OnDestroy {
     const maxRow = element.gridPosition.startRow + newSpan.rows;
     
     if (maxCol > this.gridConfig.columns + 1 || maxRow > this.gridConfig.rows + 1) {
-      console.warn('Cannot resize element: would exceed grid boundaries');
       return;
     }
     
@@ -314,7 +295,6 @@ export class GridComponent implements OnInit, OnDestroy {
     });
     
     if (wouldConflict) {
-      console.warn('Cannot resize element: would conflict with existing element');
       return;
     }
     
@@ -324,7 +304,6 @@ export class GridComponent implements OnInit, OnDestroy {
     };
     
     this.layoutStateService.updateElement(element.id, updatedElement);
-    console.log('Resized element:', element.id, 'to span:', newSpan);
   }
 
 }
