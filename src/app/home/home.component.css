@@ -1,0 +1,58 @@
+.home-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+header h1 {
+  color: #2c3e50;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  color: #7f8c8d;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.features {
+  margin: 2rem 0;
+}
+
+.features h2 {
+  color: #34495e;
+  margin-bottom: 1rem;
+}
+
+.features ul {
+  list-style: none;
+  padding: 0;
+  display: inline-block;
+  text-align: left;
+}
+
+.features li {
+  padding: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.actions {
+  margin: 3rem 0;
+}
+
+.start-button {
+  display: inline-block;
+  background: #3498db;
+  color: white;
+  padding: 1rem 2rem;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  transition: background 0.3s;
+}
+
+.start-button:hover {
+  background: #2980b9;
+}

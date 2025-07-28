@@ -12,7 +12,12 @@ import { ElementComponent } from '../element/element.component';
 import { PropertiesInspectorComponent } from '../properties-inspector/properties-inspector.component';
 
 @NgModule({
-  declarations: [
+  declarations: [],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PdfDesignerRoutingModule,
     LayoutEditorComponent,
     ToolbarComponent,
     ElementPaletteComponent,
@@ -20,12 +25,6 @@ import { PropertiesInspectorComponent } from '../properties-inspector/properties
     GridComponent,
     ElementComponent,
     PropertiesInspectorComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    PdfDesignerRoutingModule
   ]
 })
 export class PdfDesignerModule { }
