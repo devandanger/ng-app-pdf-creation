@@ -1,6 +1,9 @@
 <div class="toolbar">
   <div class="toolbar-section">
     <h2 class="app-title">PDF Layout Designer</h2>
+    <div class="pdf-info">
+      <small>{{ getEstimatedPdfSize() }}</small>
+    </div>
   </div>
   
   <div class="toolbar-section toolbar-center">
@@ -8,8 +11,63 @@
   </div>
   
   <div class="toolbar-section">
-    <button type="button" class="btn btn-primary">Export PDF</button>
-    <button type="button" class="btn btn-secondary">Save Layout</button>
-    <button type="button" class="btn btn-secondary">Load Layout</button>
+    <button 
+      type="button" 
+      class="btn btn-primary" 
+      [class.loading]="isExporting"
+      [disabled]="isExporting"
+      (click)="onExportPdf()">
+      @if (isExporting) {
+        <div class="btn-spinner"></div>
+        Exporting...
+      } @else {
+        📄 Export PDF
+      }
+    </button>
+    <button 
+      type="button" 
+      class="btn btn-secondary" 
+      (click)="onSaveLayout()"
+      [disabled]="isExporting">
+      💾 Save Layout
+    </button>
+    <button 
+      type="button" 
+      class="btn btn-secondary" 
+      (click)="onLoadLayout()"
+      [disabled]="isExporting">
+      📁 Load Layout
+    </button>
+    <button 
+      type="button" 
+      class="btn btn-outline" 
+      (click)="onResetLayout()"
+      [disabled]="isExporting">
+      🗑️ Reset
+    </button>
   </div>
 </div>
+
+<!-- Progress Indicator -->
+@if (exportProgress) {
+  <div class="export-progress">
+    <div class="progress-container">
+      <div class="progress-header">
+        <span class="progress-title">{{ exportProgress.message }}</span>
+        <span class="progress-percentage">{{ exportProgress.progress.toFixed(0) }}%</span>
+      </div>
+      <div class="progress-bar">
+        <div 
+          class="progress-fill" 
+          [style.width.%]="exportProgress.progress"
+          [class.complete]="exportProgress.stage === 'complete'">
+        </div>
+      </div>
+      @if (exportProgress.elementIndex !== undefined && exportProgress.totalElements) {
+        <div class="progress-details">
+          Processing element {{ exportProgress.elementIndex + 1 }} of {{ exportProgress.totalElements }}
+        </div>
+      }
+    </div>
+  </div>
+}

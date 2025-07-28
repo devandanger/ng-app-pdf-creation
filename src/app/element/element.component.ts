@@ -19,6 +19,8 @@ export class ElementComponent implements OnInit {
   private isResizing = false;
   private resizeType: 'right' | 'bottom' | 'corner' | null = null;
   private originalSpan = { cols: 1, rows: 1 };
+  private startMousePos = { x: 0, y: 0 };
+  private gridCellSize = { width: 50, height: 50 };
 
   ngOnInit() {
     if (!this.element) {
@@ -44,13 +46,11 @@ export class ElementComponent implements OnInit {
   }
 
   onDragStart(event: CdkDragStart) {
-    console.log('Element drag started:', this.element.id);
-    // Add visual feedback for element being dragged
+    // Element drag started - add visual feedback for element being dragged
   }
 
   onDragEnd(event: CdkDragEnd) {
-    console.log('Element drag ended:', this.element.id);
-    // The grid component will handle the drop and position update
+    // Element drag ended - the grid component will handle the drop and position update
   }
 
   startResize(event: MouseEvent, type: 'right' | 'bottom' | 'corner') {
@@ -59,10 +59,14 @@ export class ElementComponent implements OnInit {
     
     this.isResizing = true;
     this.resizeType = type;
+    this.startMousePos = { x: event.clientX, y: event.clientY };
     this.originalSpan = {
       cols: this.element.gridPosition.endCol - this.element.gridPosition.startCol,
       rows: this.element.gridPosition.endRow - this.element.gridPosition.startRow
     };
+
+    // Calculate grid cell size dynamically
+    this.calculateGridCellSize();
 
     const mouseMoveHandler = (e: MouseEvent) => this.onMouseMove(e);
     const mouseUpHandler = (e: MouseEvent) => this.onMouseUp(e, mouseMoveHandler, mouseUpHandler);
@@ -70,35 +74,38 @@ export class ElementComponent implements OnInit {
     document.addEventListener('mousemove', mouseMoveHandler);
     document.addEventListener('mouseup', mouseUpHandler);
     
-    console.log('Started resizing element:', this.element.id, 'type:', type);
+    // Started resizing element
   }
 
   private onMouseMove(event: MouseEvent) {
     if (!this.isResizing || !this.resizeType) return;
     
-    // Calculate new span based on mouse position
-    // This is a simple implementation - could be enhanced with grid awareness
-    const deltaX = event.movementX;
-    const deltaY = event.movementY;
+    // Calculate total mouse movement from start position
+    const totalDeltaX = event.clientX - this.startMousePos.x;
+    const totalDeltaY = event.clientY - this.startMousePos.y;
     
     let newCols = this.originalSpan.cols;
     let newRows = this.originalSpan.rows;
     
     if (this.resizeType === 'right' || this.resizeType === 'corner') {
-      newCols = Math.max(1, newCols + Math.round(deltaX / 50)); // Approximate grid cell size
+      const colsToAdd = Math.round(totalDeltaX / this.gridCellSize.width);
+      newCols = Math.max(1, this.originalSpan.cols + colsToAdd);
     }
     
     if (this.resizeType === 'bottom' || this.resizeType === 'corner') {
-      newRows = Math.max(1, newRows + Math.round(deltaY / 50)); // Approximate grid cell size
+      const rowsToAdd = Math.round(totalDeltaY / this.gridCellSize.height);
+      newRows = Math.max(1, this.originalSpan.rows + rowsToAdd);
     }
     
-    // Emit resize event if span changed
-    if (newCols !== this.originalSpan.cols || newRows !== this.originalSpan.rows) {
+    // Only emit if span actually changed
+    const currentCols = this.element.gridPosition.endCol - this.element.gridPosition.startCol;
+    const currentRows = this.element.gridPosition.endRow - this.element.gridPosition.startRow;
+    
+    if (newCols !== currentCols || newRows !== currentRows) {
       this.elementResize.emit({
         element: this.element,
         newSpan: { cols: newCols, rows: newRows }
       });
-      this.originalSpan = { cols: newCols, rows: newRows };
     }
   }
 
@@ -109,21 +116,60 @@ export class ElementComponent implements OnInit {
     document.removeEventListener('mousemove', mouseMoveHandler);
     document.removeEventListener('mouseup', mouseUpHandler);
     
-    console.log('Finished resizing element:', this.element.id);
+    // Finished resizing element
+  }
+
+  private calculateGridCellSize() {
+    // Try to find the grid container to calculate actual cell size
+    const gridContainer = document.querySelector('.grid-container');
+    if (gridContainer) {
+      const gridStyles = window.getComputedStyle(gridContainer);
+      const gridTemplateColumns = gridStyles.gridTemplateColumns;
+      const gridTemplateRows = gridStyles.gridTemplateRows;
+      
+      // Parse grid template to get number of columns/rows
+      const columnCount = gridTemplateColumns.split(' ').length;
+      const rowCount = gridTemplateRows.split(' ').length;
+      
+      if (columnCount > 0 && rowCount > 0) {
+        const containerRect = gridContainer.getBoundingClientRect();
+        this.gridCellSize = {
+          width: containerRect.width / columnCount,
+          height: containerRect.height / rowCount
+        };
+        // Calculated grid cell size
+        return;
+      }
+    }
+    
+    // Fallback to default size if calculation fails
+    this.gridCellSize = { width: 60, height: 60 };
+    // Using fallback grid cell size
   }
 
   getElementStyles() {
-    return {
+    const styles: any = {
       'grid-column': `${this.element.gridPosition.startCol} / ${this.element.gridPosition.endCol}`,
       'grid-row': `${this.element.gridPosition.startRow} / ${this.element.gridPosition.endRow}`,
       'color': this.element.styles?.color || '#333',
       'font-size': this.element.styles?.fontSize || '14px',
+      'font-weight': this.element.styles?.fontWeight || 'normal',
       'text-align': this.element.styles?.textAlign || 'left',
       'line-height': this.element.styles?.lineHeight || 1.5,
       'background-color': this.element.styles?.backgroundColor || 'transparent',
       'padding': this.element.styles?.padding || '8px',
-      'border': this.element.styles?.border || 'none',
       'border-radius': this.element.styles?.borderRadius || '0'
     };
+
+    // Handle border styling
+    if (this.element.styles?.borderWidth && parseInt(this.element.styles.borderWidth) > 0) {
+      styles['border'] = `${this.element.styles.borderWidth} solid ${this.element.styles?.borderColor || '#cccccc'}`;
+    } else if (this.element.styles?.border) {
+      styles['border'] = this.element.styles.border;
+    } else {
+      styles['border'] = 'none';
+    }
+
+    return styles;
   }
 }

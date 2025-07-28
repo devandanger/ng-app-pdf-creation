@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { LayoutStateService } from '../services/layout-state.service';
 import { LayoutElement } from '../interfaces/layout.interface';
+import { ImageUploadComponent, ImageUploadResult } from '../image-upload/image-upload.component';
 
 @Component({
   selector: 'app-properties-inspector',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ImageUploadComponent],
   templateUrl: './properties-inspector.component.html',
   styleUrl: './properties-inspector.component.css'
 })
@@ -71,7 +72,8 @@ export class PropertiesInspectorComponent implements OnInit, OnDestroy {
     return [
       { value: 'cover', label: 'Cover' },
       { value: 'contain', label: 'Contain' },
-      { value: 'fill', label: 'Fill' }
+      { value: 'fill', label: 'Fill' },
+      { value: 'stretch', label: 'Stretch' }
     ];
   }
 
@@ -105,5 +107,17 @@ export class PropertiesInspectorComponent implements OnInit, OnDestroy {
   onSelectChange(event: Event, property: string) {
     const target = event.target as HTMLSelectElement;
     this.updateElementProperty(property, target.value);
+  }
+
+  onImageSelected(result: ImageUploadResult) {
+    if (this.selectedElement && this.selectedElement.type === 'image') {
+      this.updateElementProperty('src', result.dataUrl);
+    }
+  }
+
+  onImageRemoved() {
+    if (this.selectedElement && this.selectedElement.type === 'image') {
+      this.updateElementProperty('src', '');
+    }
   }
 }

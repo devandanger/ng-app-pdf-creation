@@ -99,8 +99,18 @@
         <div class="property-section">
           <h4 class="section-title">Image Properties</h4>
           
+          <div class="property-row full-width">
+            <label class="property-label">Image Upload:</label>
+            <app-image-upload
+              [currentImageUrl]="selectedElement.src || ''"
+              [maxSizeInMB]="5"
+              (imageSelected)="onImageSelected($event)"
+              (imageRemoved)="onImageRemoved()">
+            </app-image-upload>
+          </div>
+          
           <div class="property-row">
-            <label class="property-label" for="image-src">Image URL:</label>
+            <label class="property-label" for="image-src">Or Image URL:</label>
             <input 
               id="image-src"
               type="url" 

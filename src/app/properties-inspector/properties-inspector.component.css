@@ -57,6 +57,17 @@
   margin-bottom: 0;
 }
 
+.property-row.full-width {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.property-row.full-width .property-label {
+  text-align: left;
+  min-width: auto;
+}
+
 .property-label {
   font-size: 12px;
   font-weight: 500;
