@@ -19,11 +19,14 @@ export interface GridPosition {
 export interface ElementStyles {
   color?: string;
   fontSize?: string;
+  fontWeight?: string;
   textAlign?: 'left' | 'center' | 'right' | 'justify';
   lineHeight?: number;
   backgroundColor?: string;
   padding?: string;
   border?: string;
+  borderWidth?: string;
+  borderColor?: string;
   borderRadius?: string;
 }
 

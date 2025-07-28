@@ -34,6 +34,10 @@ export class LayoutStateService {
     return this.layoutSubject.value;
   }
 
+  getCurrentLayout(): Layout {
+    return this.layoutSubject.value;
+  }
+
   updateLayout(layout: Layout): void {
     this.layoutSubject.next(layout);
   }

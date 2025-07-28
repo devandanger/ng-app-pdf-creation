@@ -94,23 +94,30 @@
 - [x] Element-specific styling and backgrounds
 - [x] Responsive element scaling
 
-## Phase 5: Properties Inspector
+## Phase 5: Properties Inspector ✅ COMPLETED
 
-### 5.1 Property Panel UI
-- [ ] Show properties for selected element
-- [ ] Create form controls for text properties:
+### 5.1 Property Panel UI ✅ COMPLETED
+- [x] Show properties for selected element
+- [x] Create form controls for text properties:
   - Content (rich text editor or textarea)
   - Font size
   - Color
   - Text alignment
-- [ ] Create form controls for image properties:
+  - Font weight
+- [x] Create form controls for image properties:
   - Image URL/upload
   - Fit mode (cover, contain, stretch)
+- [x] Create form controls for common styling:
+  - Background color
+  - Border width and color
+  - Padding
 
-### 5.2 Property Binding
-- [ ] Two-way binding between inspector and elements
-- [ ] Real-time preview of property changes
-- [ ] Validation for property values
+### 5.2 Property Binding ✅ COMPLETED
+- [x] Two-way binding between inspector and elements
+- [x] Real-time preview of property changes
+- [x] Validation for property values
+- [x] Type-safe event handling
+- [x] Responsive design for mobile devices
 
 ## Phase 6: Image Handling
 

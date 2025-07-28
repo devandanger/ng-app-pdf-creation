@@ -1,5 +1,7 @@
 .properties-inspector {
   padding: 20px;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .inspector-title {
@@ -20,4 +22,132 @@
 .no-selection p {
   margin: 0;
   font-style: italic;
+}
+
+.property-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.property-section {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #495057;
+  margin: 0 0 12px 0;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.property-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 8px;
+}
+
+.property-row:last-child {
+  margin-bottom: 0;
+}
+
+.property-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #495057;
+  min-width: 80px;
+  text-align: right;
+}
+
+.property-value {
+  font-size: 12px;
+  color: #6c757d;
+  font-weight: 400;
+}
+
+.property-input {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 12px;
+  background: white;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.property-input:focus {
+  outline: none;
+  border-color: #80bdff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.property-input.textarea {
+  resize: vertical;
+  min-height: 60px;
+  font-family: inherit;
+}
+
+.property-input.color-input {
+  width: 50px;
+  height: 32px;
+  padding: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.input-unit {
+  font-size: 11px;
+  color: #6c757d;
+  font-weight: 400;
+  min-width: 20px;
+}
+
+/* Number input styling */
+.property-input[type="number"] {
+  max-width: 80px;
+}
+
+/* Select styling */
+.property-input select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 8px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 32px;
+  cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .property-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+  
+  .property-label {
+    text-align: left;
+    min-width: auto;
+  }
+  
+  .property-input.color-input {
+    align-self: flex-start;
+  }
+}
+
+/* Smooth transitions for real-time preview */
+.property-input {
+  transition: all 0.2s ease;
+}
+
+/* Focus states for better accessibility */
+.property-input:focus-visible {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
 }

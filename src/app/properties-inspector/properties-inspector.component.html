@@ -1,7 +1,183 @@
 <div class="properties-inspector">
   <h3 class="inspector-title">Properties</h3>
   
-  <div class="no-selection">
-    <p>Select an element to edit its properties</p>
-  </div>
+  @if (!selectedElement) {
+    <div class="no-selection">
+      <p>Select an element to edit its properties</p>
+    </div>
+  } @else {
+    <div class="property-sections">
+      
+      <!-- Element Info -->
+      <div class="property-section">
+        <h4 class="section-title">Element Info</h4>
+        <div class="property-row">
+          <label class="property-label">Type:</label>
+          <span class="property-value">{{ selectedElement.type | titlecase }}</span>
+        </div>
+        <div class="property-row">
+          <label class="property-label">Position:</label>
+          <span class="property-value">
+            Row {{ selectedElement.gridPosition.startRow }}, 
+            Col {{ selectedElement.gridPosition.startCol }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Text Properties -->
+      @if (selectedElement.type === 'text') {
+        <div class="property-section">
+          <h4 class="section-title">Text Properties</h4>
+          
+          <div class="property-row">
+            <label class="property-label" for="text-content">Content:</label>
+            <textarea 
+              id="text-content"
+              class="property-input textarea"
+              [value]="selectedElement.content || ''"
+              (input)="onInputChange($event, 'content')"
+              placeholder="Enter text content"
+              rows="3">
+            </textarea>
+          </div>
+          
+          <div class="property-row">
+            <label class="property-label" for="font-size">Font Size:</label>
+            <input 
+              id="font-size"
+              type="number" 
+              class="property-input"
+              [value]="getFontSizeValue()"
+              (input)="onNumberInputChange($event, 'styles.fontSize', 'px')"
+              min="8"
+              max="72"
+              step="1">
+            <span class="input-unit">px</span>
+          </div>
+          
+          <div class="property-row">
+            <label class="property-label" for="text-color">Color:</label>
+            <input 
+              id="text-color"
+              type="color" 
+              class="property-input color-input"
+              [value]="selectedElement.styles?.color || '#000000'"
+              (input)="onInputChange($event, 'styles.color')">
+          </div>
+          
+          <div class="property-row">
+            <label class="property-label" for="text-align">Alignment:</label>
+            <select 
+              id="text-align"
+              class="property-input"
+              [value]="selectedElement.styles?.textAlign || 'left'"
+              (change)="onSelectChange($event, 'styles.textAlign')">
+              @for (alignment of getTextAlignments(); track alignment.value) {
+                <option [value]="alignment.value">{{ alignment.label }}</option>
+              }
+            </select>
+          </div>
+          
+          <div class="property-row">
+            <label class="property-label" for="font-weight">Font Weight:</label>
+            <select 
+              id="font-weight"
+              class="property-input"
+              [value]="selectedElement.styles?.fontWeight || 'normal'"
+              (change)="onSelectChange($event, 'styles.fontWeight')">
+              <option value="normal">Normal</option>
+              <option value="bold">Bold</option>
+              <option value="lighter">Lighter</option>
+              <option value="bolder">Bolder</option>
+            </select>
+          </div>
+        </div>
+      }
+
+      <!-- Image Properties -->
+      @if (selectedElement.type === 'image') {
+        <div class="property-section">
+          <h4 class="section-title">Image Properties</h4>
+          
+          <div class="property-row">
+            <label class="property-label" for="image-src">Image URL:</label>
+            <input 
+              id="image-src"
+              type="url" 
+              class="property-input"
+              [value]="selectedElement.src || ''"
+              (input)="onInputChange($event, 'src')"
+              placeholder="https://example.com/image.jpg">
+          </div>
+          
+          <div class="property-row">
+            <label class="property-label" for="image-fit">Fit Mode:</label>
+            <select 
+              id="image-fit"
+              class="property-input"
+              [value]="selectedElement.fit || 'cover'"
+              (change)="onSelectChange($event, 'fit')">
+              @for (fitMode of getImageFitModes(); track fitMode.value) {
+                <option [value]="fitMode.value">{{ fitMode.label }}</option>
+              }
+            </select>
+          </div>
+        </div>
+      }
+
+      <!-- Common Styling -->
+      <div class="property-section">
+        <h4 class="section-title">Styling</h4>
+        
+        <div class="property-row">
+          <label class="property-label" for="bg-color">Background:</label>
+          <input 
+            id="bg-color"
+            type="color" 
+            class="property-input color-input"
+            [value]="selectedElement.styles?.backgroundColor || '#ffffff'"
+            (input)="onInputChange($event, 'styles.backgroundColor')">
+        </div>
+        
+        <div class="property-row">
+          <label class="property-label" for="border-width">Border Width:</label>
+          <input 
+            id="border-width"
+            type="number" 
+            class="property-input"
+            [value]="getBorderWidthValue()"
+            (input)="onNumberInputChange($event, 'styles.borderWidth', 'px')"
+            min="0"
+            max="10"
+            step="1">
+          <span class="input-unit">px</span>
+        </div>
+        
+        <div class="property-row">
+          <label class="property-label" for="border-color">Border Color:</label>
+          <input 
+            id="border-color"
+            type="color" 
+            class="property-input color-input"
+            [value]="selectedElement.styles?.borderColor || '#cccccc'"
+            (input)="onInputChange($event, 'styles.borderColor')">
+        </div>
+        
+        <div class="property-row">
+          <label class="property-label" for="padding">Padding:</label>
+          <input 
+            id="padding"
+            type="number" 
+            class="property-input"
+            [value]="getPaddingValue()"
+            (input)="onNumberInputChange($event, 'styles.padding', 'px')"
+            min="0"
+            max="50"
+            step="1">
+          <span class="input-unit">px</span>
+        </div>
+      </div>
+
+    </div>
+  }
 </div>
